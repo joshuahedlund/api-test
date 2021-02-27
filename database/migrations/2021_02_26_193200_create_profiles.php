@@ -21,7 +21,7 @@ class CreateProfiles extends Migration
             $table->string('apt')->nullable();
             $table->string('city')->nullable();
             $table->string('state',2)->nullable();
-            $table->string('zip')->nullable();
+            $table->string('zip',10)->nullable();
             $table->string('phone',16)->nullable();
             $table->string('mobile',16)->nullable();
             $table->string('email')->nullable();

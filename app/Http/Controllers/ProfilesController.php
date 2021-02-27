@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileCreateRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 
 class ProfilesController {
-    public function create(Request $request){
+    public function create(ProfileCreateRequest $request){
         $profile = new Profile();
 
         foreach($profile->getFillable() as $field){
@@ -22,7 +24,7 @@ class ProfilesController {
         ]);
     }
 
-    public function update($id, Request $request){
+    public function update($id, ProfileUpdateRequest $request){
         $profile = Profile::find($id);
 
         foreach($profile->getFillable() as $field){

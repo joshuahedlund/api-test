@@ -25,9 +25,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function() {
 
     //todo change these to post
     Route::get('/profiles/create','ProfilesController@create');
-    Route::get('/profiles/update/{id}','ProfilesController@update');
-    Route::get('/profiles/delete/{id}','ProfilesController@delete');
-
+    Route::get('/profile/{id}/update','ProfilesController@update');
+    Route::get('/profile/{id}/delete','ProfilesController@delete');
     Route::get('/profile/{id}/create-interaction','InteractionsController@create');
 });
 
