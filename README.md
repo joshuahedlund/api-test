@@ -39,34 +39,35 @@ Visit on `localhost:8000`
 
 ## Endpoints
 
-View a profile
-
 > GET /profile/{id}
 
-View all profiles
+View a profile
 
 > GET /profiles/list
 
-View all profiles with interactions
+View list of profiles
 
-> GET /profiles/list?includeInteractions
-
-View an interaction
+- `?includeInteractions` to include interactions in records
+- `?all` to return all results as a single page
+- `?page={int}` to return results by page
 
 > GET /interaction/{id}
 
-Create a profile
+View an interaction
 
 > POST /profile/{id}/create
 
-Update a profile
+Create a profile
 
 > POST /profile/{id}/update
 
-Delete a profile
+Update a profile
 
 > POST /profile/{id}/delete
 
-Create an interaction
+Delete a profile
 
 > POST /profile/{id}/create-interaction
+
+Create an interaction
+
