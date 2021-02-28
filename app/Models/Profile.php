@@ -22,6 +22,10 @@ class Profile extends Model
         'address_geo'
     ];
 
+    public function interactions(){
+        return $this->hasMany(Interaction::class);
+    }
+
     public static function getWithInteractions(){
         return DB::table('profiles as p')
             ->leftJoin('interactions as i','i.profile_id','=','p.id')

@@ -15,4 +15,8 @@ class Interaction extends Model
         'address_geo',
         'outcome'
     ];
+
+    public function profile(){
+        return $this->belongsTo(Profile::class);
+    }
 }

@@ -23,6 +23,10 @@ Add .env file with database credentials
 >
 > DB_PASSWORD=
 
+Set up APP_KEY in .env
+
+> php artisan key:generate 
+
 Run database migrations
 
 > php artisan migrate

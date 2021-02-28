@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json(['status' => 'on']);
 });
 
 Route::group(['namespace' => 'App\Http\Controllers'], function() {
@@ -23,13 +23,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function() {
 
     Route::get('/profiles/list', 'ProfilesController@index');
 
-    //todo change these to post
-    Route::get('/profiles/create','ProfilesController@create');
-    Route::get('/profile/{id}/update','ProfilesController@update');
-    Route::get('/profile/{id}/delete','ProfilesController@delete');
-    Route::get('/profile/{id}/create-interaction','InteractionsController@create');
+    Route::post('/profiles/create','ProfilesController@create');
+    Route::post('/profile/{id}/update','ProfilesController@update');
+    Route::post('/profile/{id}/delete','ProfilesController@delete');
+    Route::post('/profile/{id}/create-interaction','InteractionsController@create');
 });
 
 Route::fallback(function(){
-    return response()->json(['error' => 'Invalid endpoint']);
+    return response()->json(['error' => 'Invalid endpoint'],404);
 });
