@@ -12,8 +12,8 @@ class ProfileUpdateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'first_name' => 'max:255',
-            'last_name' => 'max:255',
+            'first_name' => 'min:1|max:255',
+            'last_name' => 'min:1|max:255',
             'address' => 'max:255',
             'apt' => 'max:255',
             'city' => 'max:255',

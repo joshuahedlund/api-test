@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ProfileNotFoundException;
 use App\Http\Requests\ProfileCreateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
@@ -27,8 +28,11 @@ class ProfilesController {
     public function update($id, ProfileUpdateRequest $request){
         $profile = Profile::find($id);
 
+        if(empty($profile))
+            throw new ProfileNotFoundException();
+
         foreach($profile->getFillable() as $field){
-            if(!empty($request->$field)){
+            if($request->has($field)){
                 $profile->$field = $request->$field;
             }
         }
@@ -50,6 +54,9 @@ class ProfilesController {
 
     public function show($id){
         $profile = Profile::find($id);
+
+        if(empty($profile))
+            throw new ProfileNotFoundException();
 
         return response()->json([
             'id' => $profile->id,
