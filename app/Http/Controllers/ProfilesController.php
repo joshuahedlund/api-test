@@ -75,16 +75,26 @@ class ProfilesController {
     }
 
     public function index(Request $request){
-        if($request->has('includeInteractions')){
-            $profiles = Profile::getWithInteractions()->toArray();
-            $profiles = array_map(function($profile){
-                $profile->interactions = json_decode('['.$profile->interactions.']');
-                return $profile;
-            }, $profiles);
-        }else {
-            $profiles = Profile::all()->toArray();
+        $count = Profile::count();
+
+        if($count>0){
+            $profiles = Profile::get($request)->toArray();
+
+            //Convert json string result from mysql column into actual json
+            if($request->has('includeInteractions')){
+                $profiles = array_map(function($profile){
+                    $profile->interactions = json_decode('['.$profile->interactions.']');
+                    return $profile;
+                }, $profiles);
+            }
+        }else{
+            $profiles = [];
         }
 
-        return response()->json($profiles);
+        return response()->json([
+            'total' => $count,
+            'page' => (is_numeric($request->page) ? (int)$request->page : 1),
+            'profiles' => $profiles
+        ]);
     }
 }
