@@ -8,6 +8,11 @@ Requirements:
 
 - PHP 7.0+
 - MySQL 5.7.22+ / MariaDB 10.5+
+- composer
+
+Set up vendor files
+
+> composer update
 
 Add .env file with database credentials
 
@@ -25,7 +30,7 @@ Add .env file with database credentials
 
 Set up APP_KEY in .env
 
-> php artisan key:generate 
+> php artisan key:generate --show
 
 Run database migrations
 

@@ -62,6 +62,11 @@ class ProfilesController {
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete($id){
+        $profile = Profile::find($id);
+
+        if(empty($profile))
+            throw new ProfileNotFoundException();
+
         Profile::destroy([$id]);
 
         return response()->json([

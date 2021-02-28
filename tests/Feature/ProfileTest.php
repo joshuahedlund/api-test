@@ -2,12 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\Interaction;
 use App\Models\Profile;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
 {
-    public function testCreateMissingRequired()
+    public function testProfileCreateMissingRequired()
     {
         $response = $this->postJson(route('profile.create'), [
             'first_name' => 'Test'
@@ -17,7 +18,7 @@ class ProfileTest extends TestCase
             ->assertJsonStructure(['errors']);
     }
 
-    public function testCreateSuccess()
+    public function testProfileCreateSuccess()
     {
         $data = [
             'first_name' => 'Test',
@@ -29,7 +30,7 @@ class ProfileTest extends TestCase
         $this->assertDatabaseHas('profiles',$data);
     }
 
-    public function testShow()
+    public function testProfileShow()
     {
         $profile = Profile::where('first_name','test')->where('last_name','test')->first();
         $id = $profile->id;
@@ -40,7 +41,39 @@ class ProfileTest extends TestCase
             ->assertJsonStructure(['id','first_name','last_name']);
     }
 
-    public function testList()
+    public function testInteractionCreateInvalidType(){
+        $profile = Profile::where('first_name','test')->where('last_name','test')->first();
+
+        $response = $this->postJson(route('interaction.create', $profile->id), [
+            'type' => 'invalid-value',
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonStructure(['errors']);
+    }
+
+    public function testInteractionCreateSuccess(){
+        $profile = Profile::where('first_name','test')->where('last_name','test')->first();
+
+        $response = $this->postJson(route('interaction.create', $profile->id), [
+            'type' => 'in-person'
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['id','success']);
+    }
+
+    public function testInteractionShow(){
+        $interaction = Interaction::all()->first();
+        $id = $interaction->id;
+
+        $response = $this->get(route('interaction.show', $id));
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['profile_id','type','action_at']);
+    }
+
+    public function testProfileList()
     {
         $response = $this->get(route('profile.index'));
 
@@ -48,7 +81,7 @@ class ProfileTest extends TestCase
             ->assertJsonStructure(['total','page','profiles']);
     }
 
-    public function testListWithInteractions()
+    public function testProfileListWithInteractions()
     {
         $response = $this->get(route('profile.index', ['includeInteractions' => 1]));
 
@@ -61,7 +94,7 @@ class ProfileTest extends TestCase
             ]);
     }
 
-    public function testUpdateMissingRequired()
+    public function testProfileUpdateMissingRequired()
     {
         $profile = Profile::where('first_name','test')->where('last_name','test')->first();
         $id = $profile->id;
@@ -77,7 +110,7 @@ class ProfileTest extends TestCase
             ->assertJsonStructure(['errors']);
     }
 
-    public function testUpdateSuccess()
+    public function testProfileUpdateSuccess()
     {
         $profile = Profile::where('first_name','Test')->where('last_name','Test')->first();
         $id = $profile->id;
@@ -92,7 +125,7 @@ class ProfileTest extends TestCase
         $this->assertDatabaseHas('profiles', $data);
     }
 
-    public function testDeleteSuccess()
+    public function testProfileDeleteSuccess()
     {
         $profile = Profile::where('first_name','Tester')->where('last_name','Tester')->first();
         $id = $profile->id;

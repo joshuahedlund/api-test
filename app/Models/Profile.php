@@ -22,6 +22,14 @@ class Profile extends Model
         'address_geo'
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function(Profile $profile) {
+            $profile->interactions()->delete();
+        });
+    }
+
     public function interactions(){
         return $this->hasMany(Interaction::class);
     }
