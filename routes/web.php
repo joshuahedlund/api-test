@@ -18,15 +18,15 @@ Route::get('/', function () {
 });
 
 Route::group(['namespace' => 'App\Http\Controllers'], function() {
-    Route::get('/profile/{id}','ProfilesController@show');
-    Route::get('/interaction/{id}','InteractionsController@show');
+    Route::get('/profile/{id}', ['as' => 'profile.show', 'uses' => 'ProfilesController@show']);
+    Route::get('/interaction/{id}', ['as' => 'interaction.show', 'uses' => 'InteractionsController@show']);
 
-    Route::get('/profiles/list', 'ProfilesController@index');
+    Route::get('/profiles/list', ['as' => 'profile.index', 'uses' => 'ProfilesController@index']);
 
-    Route::post('/profiles/create','ProfilesController@create');
-    Route::post('/profile/{id}/update','ProfilesController@update');
-    Route::post('/profile/{id}/delete','ProfilesController@delete');
-    Route::post('/profile/{id}/create-interaction','InteractionsController@create');
+    Route::post('/profiles/create', ['as' => 'profile.create', 'uses' => 'ProfilesController@create']);
+    Route::post('/profile/{id}/update', ['as' => 'profile.update', 'uses' => 'ProfilesController@update']);
+    Route::post('/profile/{id}/delete', ['as' => 'profile.delete', 'uses' => 'ProfilesController@delete']);
+    Route::post('/profile/{id}/create-interaction', ['as' => 'interaction.create', 'uses' => 'InteractionsController@create']);
 });
 
 Route::fallback(function(){

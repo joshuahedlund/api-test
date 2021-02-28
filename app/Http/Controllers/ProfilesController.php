@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ProfileNotFoundException;
 use App\Http\Requests\ProfileCreateRequest;
+use App\Http\Requests\ProfileListRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
-use Illuminate\Http\Request;
 
 class ProfilesController {
+
+    /**
+     * Store a new profile instance
+     * @param ProfileCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create(ProfileCreateRequest $request){
         $profile = new Profile();
 
@@ -25,6 +31,12 @@ class ProfilesController {
         ]);
     }
 
+    /**
+     * Update an existing profile instance
+     * @param $id
+     * @param ProfileUpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update($id, ProfileUpdateRequest $request){
         $profile = Profile::find($id);
 
@@ -44,6 +56,11 @@ class ProfilesController {
         ]);
     }
 
+    /**
+     * Delete a profile instance
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id){
         Profile::destroy([$id]);
 
@@ -52,6 +69,11 @@ class ProfilesController {
         ]);
     }
 
+    /**
+     * Return a profile instance
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id){
         $profile = Profile::find($id);
 
@@ -74,11 +96,19 @@ class ProfilesController {
         ]);
     }
 
-    public function index(Request $request){
+    /**
+     * List profile instances
+     * Default behavior returns a limited page of records with top-level data, sorted by id. Query parameters can adjust output (see Profile::get)
+     * @param ProfileListRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(ProfileListRequest $request){
         $count = Profile::count();
 
         if($count>0){
-            $profiles = Profile::get($request)->toArray();
+            $args = $request->only(['includeInteractions','all','page']);
+
+            $profiles = Profile::get($args)->toArray();
 
             //Convert json string result from mysql column into actual json
             if($request->has('includeInteractions')){
@@ -93,7 +123,7 @@ class ProfilesController {
 
         return response()->json([
             'total' => $count,
-            'page' => (is_numeric($request->page) ? (int)$request->page : 1),
+            'page' => ($request->has('page') ? $request->page : 1),
             'profiles' => $profiles
         ]);
     }

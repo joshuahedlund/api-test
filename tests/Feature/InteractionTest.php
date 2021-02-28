@@ -2,12 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Models\Interaction;
+use App\Models\Profile;
 use Tests\TestCase;
 
 class InteractionTest extends TestCase
 {
     public function testCreateInvalidType(){
-        $response = $this->postJson('/profile/1/create-interaction',[
+        $profile = Profile::all()->first();
+
+        $response = $this->postJson(route('interaction.create', $profile->id), [
             'type' => 'invalid-value',
         ]);
 
@@ -16,7 +20,9 @@ class InteractionTest extends TestCase
     }
 
     public function testCreateSuccess(){
-        $response = $this->postJson('/profile/1/create-interaction',[
+        $profile = Profile::all()->first();
+
+        $response = $this->postJson(route('interaction.create', $profile->id), [
             'type' => 'in-person'
         ]);
 
@@ -25,7 +31,10 @@ class InteractionTest extends TestCase
     }
 
     public function testShow(){
-        $response = $this->get('/interaction/1');
+        $interaction = Interaction::all()->first();
+        $id = $interaction->id;
+
+        $response = $this->get(route('interaction.show', $id));
 
         $response->assertStatus(200)
             ->assertJsonStructure(['profile_id','type','action_at']);

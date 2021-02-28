@@ -9,6 +9,12 @@ use App\Models\Interaction;
 use App\Models\Profile;
 
 class InteractionsController {
+    /**
+     * Create an interaction instance
+     * @param $id
+     * @param InteractionCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create($id, InteractionCreateRequest $request){
         //Validate profile
         $profile = Profile::find($id);
@@ -33,6 +39,11 @@ class InteractionsController {
         ]);
     }
 
+    /**
+     * Return an interaction instance
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id){
         $interaction = Interaction::find($id);
 
