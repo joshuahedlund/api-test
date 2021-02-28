@@ -31,10 +31,19 @@ Add .env file with database credentials
 Set up APP_KEY in .env
 
 > php artisan key:generate --show
+> > base64:xxxxxxxxxxx
+
+If APP_KEY is not added to .env automatically, add manually
+
+> APP_KEY=base64:xxxxxxxxxxx
 
 Run database migrations
 
 > php artisan migrate
+
+Run database seeding (if desired)
+
+> php artisan db:seed
 
 Start server:
 
