@@ -12,6 +12,7 @@ class ProfileUpdateRequest extends BaseRequest
     public function rules()
     {
         return [
+            //todo more specific formatting validation where applicable
             'first_name' => 'min:1|max:255',
             'last_name' => 'min:1|max:255',
             'address' => 'max:255',

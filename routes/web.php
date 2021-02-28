@@ -17,7 +17,7 @@ Route::get('/', function () {
     return response()->json(['status' => 'on']);
 });
 
-Route::group(['namespace' => 'App\Http\Controllers'], function() {
+Route::group(['namespace' => 'App\Http\Controllers'], function() { //todo api auth
     Route::get('/profile/{id}', ['as' => 'profile.show', 'uses' => 'ProfilesController@show']);
     Route::get('/interaction/{id}', ['as' => 'interaction.show', 'uses' => 'InteractionsController@show']);
 
